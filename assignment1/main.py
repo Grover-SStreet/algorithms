@@ -103,31 +103,32 @@ class Stack:
         return output_str
 
 
+def evaluate(exp: str) -> float:
+    math_problem = exp.split(' ')
+    stack_operator = Stack()
+    stack_operand = Stack()
+
+    lam_operator_mapping = {"+": (lambda x, y: x + y),
+                            "-": (lambda x, y: x - y),
+                            "/": (lambda x, y: x / y),
+                            "*": (lambda x, y: x * y)
+                            }
+
+    for item in math_problem:
+        if item in "+-*/":
+            stack_operator.push(item)
+        elif item not in "()":
+            stack_operand.push(item)
+        elif item == ")":
+            value1 = stack_operand.pop()
+            value2 = stack_operand.pop()
+            temp_oper = stack_operator.pop()
+            value = lam_operator_mapping[temp_oper](float(value2), float(value1))
+            stack_operand.push(value)
+
+    return stack_operand.pop()
+
+
 if __name__ == "__main__":
-    # initializing stack
-    stack = Stack()
-    print(f'The stack after initialization is {stack}')
-    assert (stack.isEmpty() == True)  # check if isEmpty works properly
-
-    # add the items to stack
-    for i in range(5):
-        stack.push(i)
-    print(f'The stack after push is {stack}')
-
-    assert (stack.isEmpty() == False)  # check if isEmpty works properly
-    assert (len(stack) == 5)  # check if __len__ works properly
-
-# pop the stack
-print("Pop the stack")
-while len(stack) > 0:
-    item = stack.pop()
-    print(f'item dequeued from stack: {item}')
-    print(f'stack: {stack}')
-    print(f'length of stack: {len(stack)}')
-
-assert (stack.isEmpty() == True)
-
-# enqueue the queue
-stack.push(5)
-print(f"\nstack after push: {stack}")
-print(f"length of stack: {len(stack)}")
+    assert (evaluate("( 1 + ( ( 2 + 3 ) * ( 4 * 5 ) ) )") == 101.0)
+    assert (evaluate("( ( 9 * 7 ) + ( 8 / ( 10 + 6 ) ) )") == 63.5)
