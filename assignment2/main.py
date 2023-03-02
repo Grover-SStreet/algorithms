@@ -116,43 +116,97 @@ def dfs(self, g: Graph, v: int) -> None:
 
 # EdgeTo looks like [None, 4, 3, 0, 0, 1]
 # The path to vertex
+#
+# from data.adt import Stack
+#
+#
+# class StackDFS:
+#     def __init__(self, g: Graph, s: int) -> None:
+#         self.__marked = [False] * g.V  # has dfs() visited this vertex?
+#         self.__edgeTo = [None] * g.V  # last vertex on known path to this vertex
+#         self.__s = s  # source vertex
+#         self.dfs(g, s)
+#
+#     def dfs(self, g: Graph, s: int) -> None:
+#         # CLOSE
+#         stack = Stack()
+#         stack.push(s)
+#         push_back = len(g.adj(s))
+#         counter = 0
+#         self.__marked[s] = True
+#
+#         while not stack.isEmpty() and counter < push_back:
+#             v = stack.pop()
+#             for w in g.adj(v):  # see the vertices adjacent to v
+#                 if self.__marked[w] is False:  # if not visited yet
+#                     stack.push(w)
+#                     self.__edgeTo[w] = v
+#                     print(f"spot W {w} initializing v with {v}")
+#                     self.__marked[w] = True  # mark the vertex
+#                     break
+#                 else:
+#                     stack.push(s)
+#                     counter +=1
+#
+#     def hasPathTo(self, v: int) -> bool:
+#         return self.__marked[v]
+#
+#     def pathTo(self, v: int) -> Stack:
+#         if self.hasPathTo(v) is False: return None
+#         path = Stack()
+#         while v != self.__s:
+#             path.push(v)
+#             v = self.__edgeTo[v]
+#         path.push(self.__s)
+#         return path
+#
+#
+# # create the graph given in the example
+# graph_ex = Graph("data/example_G.txt")
+#
+# # run dfs
+# dfs_ex = StackDFS(graph_ex, 0)
+#
+# # print the path to vertex i
+# print("The path to vertex ")
+# for i in range(1, 6):
+#     print(f" - {i} is {dfs_ex.pathTo(i)}")
 
-from data.adt import Stack
+
+# Write the API for BFS below
+from data.adt import Queue
 
 
-class StackDFS:
+class BFS:
     def __init__(self, g: Graph, s: int) -> None:
         self.__marked = [False] * g.V  # has dfs() visited this vertex?
         self.__edgeTo = [None] * g.V  # last vertex on known path to this vertex
         self.__s = s  # source vertex
-        self.dfs(g, s)
+        self.bfs(g, s)
 
-    def dfs(self, g: Graph, s: int) -> None:
-        # CLOSE
-        stack = Stack()
-        stack.push(s)
-        push_back = len(g.adj(s))
-        counter = 0
+    def bfs(self, g: Graph, s: int) -> None:
+        # Write your code here
+
+        queue = Queue()
+        queue.enqueue(s)
         self.__marked[s] = True
 
-        while not stack.isEmpty() and counter < push_back:
-            v = stack.pop()
+        while not queue.isEmpty():
+            v = queue.dequeue()
             for w in g.adj(v):  # see the vertices adjacent to v
                 if self.__marked[w] is False:  # if not visited yet
-                    stack.push(w)
+                    queue.enqueue(w)
                     self.__edgeTo[w] = v
                     print(f"spot W {w} initializing v with {v}")
                     self.__marked[w] = True  # mark the vertex
-                    break
-                else:
-                    stack.push(s)
-                    counter +=1
+
 
     def hasPathTo(self, v: int) -> bool:
         return self.__marked[v]
 
-    def pathTo(self, v: int) -> Stack:
-        if self.hasPathTo(v) is False: return None
+    def pathTo(self, v: int):
+        if self.hasPathTo(v) is False:
+            return None
         path = Stack()
         while v != self.__s:
             path.push(v)
@@ -165,9 +219,9 @@ class StackDFS:
 graph_ex = Graph("data/example_G.txt")
 
 # run dfs
-dfs_ex = StackDFS(graph_ex, 0)
+bfs_ex = BFS(graph_ex, 0)
 
 # print the path to vertex i
 print("The path to vertex ")
 for i in range(1, 6):
-    print(f" - {i} is {dfs_ex.pathTo(i)}")
+    print(f" - {i} is {bfs_ex.pathTo(i)}")
