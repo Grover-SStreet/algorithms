@@ -1,0 +1,148 @@
+{
+    "example": {
+        "keys": [20,9,22,5,12,3,15],
+        "vals":["Who","Runs","the","World","?","Duc","Sang"]
+    },
+    "testcase_0": {
+        "keys": [
+            1,
+            3,
+            5,
+            7,
+            9,
+            11,
+            13,
+            15
+        ],
+        "vals": [
+            "apple",
+            "banana",
+            "cherry",
+            "durian",
+            "elderberry",
+            "fig",
+            "grape",
+            "honeydew"
+        ]
+    },
+    "testcase_1": {
+        "keys": [
+            8,
+            3,
+            11,
+            1,
+            6,
+            13,
+            4,
+            7,
+            10
+        ],
+        "vals": [
+            "alpha",
+            "beta",
+            "gamma",
+            "delta",
+            "epsilon",
+            "zeta",
+            "eta",
+            "theta",
+            "iota"
+        ]
+    },
+    "testcase_2": {
+        "keys": [
+            18,
+            22,
+            31,
+            40,
+            51,
+            60
+        ],
+        "vals": [
+            "John",
+            "Mary",
+            "Peter",
+            "Elizabeth",
+            "David",
+            "Susan"
+        ]
+    },
+    "testcase_3": {
+        "keys": [
+            2,
+            4,
+            6,
+            8,
+            10,
+            12,
+            14,
+            16,
+            18,
+            20
+        ],
+        "vals": [
+            "red",
+            "orange",
+            "yellow",
+            "green",
+            "blue",
+            "indigo",
+            "violet",
+            "pink",
+            "brown",
+            "gray"
+        ]
+    },
+    "testcase_4": {
+        "keys": [
+            30,
+            15,
+            45,
+            20,
+            35,
+            50,
+            10,
+            25,
+            40
+        ],
+        "vals": [
+            "dog",
+            "cat",
+            "hamster",
+            "parrot",
+            "fish",
+            "snake",
+            "rabbit",
+            "guinea pig",
+            "ferret"
+        ]
+    },
+    "testcase_5": {
+        "keys": [
+            100,
+            200,
+            300,
+            400,
+            500,
+            600,
+            700,
+            800,
+            900,
+            1000,
+            1100
+        ],
+        "vals": [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November"
+        ]
+    }
+}

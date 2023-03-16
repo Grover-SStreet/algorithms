@@ -45,4 +45,4 @@ bfs_ex = BFS(graph_ex, 0)
 # print the path to vertex i
 print("The path to vertex ")
 for i in range(1,6):
-  print(f
+  print(i)
