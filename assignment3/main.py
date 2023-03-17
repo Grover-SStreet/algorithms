@@ -95,83 +95,90 @@ class BST:
         return right_side.key
 
     def floor(self, key: int):
-        if key == self.__root.key:
+        if self.__root is None:
+            return -1
+
+        if self.__root.key == key:
             return self.__root.key
-        elif key < self.__root.key:
-            left_side = self.__root
-            while left_side is not None:
-                if key > left_side.key:
-                    if left_side.right.key > key and left_side.right.left is None:
-                        return left_side.key
+        elif self.__root.key > key:
+            side = self.__root.left
+        else:
+            side = self.__root.right
+
+        while True:
+            if side.left is not None and side.right is not None:
+                if side.key < key:
+                    side = side.right
+                elif side.key > key:
+                    side = side.left
+            elif side.right is not None:
+                if side.key < key:
+                    if side.right.key > key:
+                        return side.key
                     else:
-                        left_side = left_side.right
-                elif key < left_side.key:
-                    left_side = left_side.left
-                elif key == left_side.key:
-                    return left_side.key
-                if left_side.right is None and left_side.left is None:
-                    if left_side.key > key:
-                        return None
-                    else:
-                        return left_side.key
-        elif key > self.__root.key:
-            right_side = self.__root
-            while right_side is not None:
-                if key > right_side.key:
-                    if right_side.right.key > key and right_side.right.left is None:
-                        return right_side.key
-                    else:
-                        right_side = right_side.right
-                elif key < right_side.key:
-                    right_side = right_side.left
-                elif key == right_side.key:
-                    return right_side.key
-                if right_side.right is None and right_side.left is None:
-                    if key < right_side.key:
+                        side = side.right
+            elif side.left is not None:
+                if side.key > key:
+                    if side.left.key < key:
+                        return side.key
+                else:
+                    side = side.left
+            else:
+                if key < side.key:
+                    if self.__root.key < key:
                         return self.__root.key
                     else:
-                        return right_side.key
+                        return None
+                elif key == side.key:
+                    return key
+                else:
+                    return side.key
 
     def ceiling(self, key: int):
-        if key == self.__root.key:
+        if self.__root is None:
+            return -1
+
+        if self.__root.key == key:
             return self.__root.key
-        elif key > self.__root.key:
-            right_side = self.__root
-            while right_side is not None:
-                if key < right_side.key:
-                    if right_side.right.key < key and right_side.right.left is None:
-                        return left_side.key
+        elif self.__root.key > key:
+            side = self.__root.left
+        else:
+            side = self.__root.right
+
+        while True:
+            if side.left is not None and side.right is not None:
+                if side.key < key:
+                        side = side.right
+                elif side.key > key:
+                    if side.left.key < key < side.key:
+                        return side.key
                     else:
-                        left_side = left_side.right
-                elif key > left_side.key:
-                    left_side = left_side.left
-                elif key == left_side.key:
-                    return left_side.key
-                if left_side.right is None and left_side.left is None:
-                    if left_side.key < key:
+                        side = side.left
+            elif side.right is not None:
+                if side.key > key:
+                    if side.right.key > key:
+                        return side.key
+                    else:
+                        side = side.right
+                else:
+                    side=side.right
+            elif side.left is not None:
+                if side.key > key:
+                    if side.left.key < key:
+                        return side.key
+                else:
+                    side = side.left
+
+            else:
+                if key > side.key:
+                    if self.__root.key < key:
                         return None
                     else:
-                        return left_side.key
-
-        raise NotImplementedError
-
-        # elif key > self.__root.key:
-        #     right_side = self.__root
-        #     while right_side is not None:
-        #         if key > right_side.key:
-        #             if right_side.right.key > key and right_side.right.left is None:
-        #                 return right_side.key
-        #             else:
-        #                 right_side = right_side.right
-        #         elif key < right_side.key:
-        #             right_side = right_side.left
-        #         elif key == right_side.key:
-        #             return right_side.key
-        #         if right_side.right is None and right_side.left is None:
-        #             if key < right_side.key:
-        #                 return self.__root.key
-        #             else:
-        #                 return right_side.key
+                        return self.__root.key
+                elif key == side.key:
+                    return key
+                else:
+                    return side.key
 
     def rank(self, key: int) -> int:
         # WRITE YOUR CODE HERE
@@ -189,14 +196,37 @@ class BST:
         raise NotImplementedError
 
 
-# assert(tc_1.ceiling(9)==10)
-# assert(tc_1.ceiling(4)==4)
-# assert(tc_1.ceiling(5)==6)
-# assert(tc_1.ceiling(2)==3)
+# # test case 1
+tc_1 = BST(**data['testcase_1'])
+# tc_1.printTree()
 
-# test case 4
+tc_4 = BST(**data['testcase_4'])
+tc_4.printTree()
+
+# assert (tc_1.floor(9) == 8)
+# assert (tc_1.floor(5) == 4)
+# assert (tc_1.floor(10) == 10)
+# assert (tc_1.floor(5) == 4)
+#
+# # # test case 4
+#
+# assert (tc_4.floor(55) == 50)
+# assert (tc_4.floor(1) is None)
+# assert (tc_4.floor(21) == 20)
+# assert (tc_4.floor(28) == 25)
+# assert (tc_4.floor(42) == 40)
+
+# test case 1
+# tc_1 = BST(**data['testcase_1'])
+assert (tc_1.ceiling(9) == 10)
+assert (tc_1.ceiling(4) == 4)
+assert (tc_1.ceiling(5) == 6)
+assert (tc_1.ceiling(2) == 3)
+
+
+# # # test case 4
 # tc_4 = BST(**data['testcase_4'])
-# assert(tc_4.ceiling(31)==35)
-# assert(tc_4.ceiling(41)==45)
-# assert(tc_4.ceiling(25)==25)
-# assert(tc_4.ceiling(51)==None)
+assert (tc_4.ceiling(31) == 35)
+assert (tc_4.ceiling(41) == 45)
+assert (tc_4.ceiling(25) == 25)
+assert (tc_4.ceiling(51) == None)
