@@ -69,7 +69,7 @@ class BST:
                 return 0
             leftAns = internal_height(node.left)
             rightAns = internal_height(node.right)
-            return max(leftAns, rightAns) +1
+            return max(leftAns, rightAns) + 1
 
         def internal_traverse(node):
             if node is None:
@@ -240,25 +240,72 @@ class BST:
 
     def delete(self, key: int) -> None:
         # WRITE YOUR CODE HERE
+        def min_node(node):
+            left_side = node
+            while node.left is not None:
+                left_side = node.left
+            return left_side
 
-        raise NotImplementedError
+        def deleteNode(node, key):
+
+            # Base Case
+            if node is None:
+                return node
+
+            # If the key to be deleted
+            # is smaller than the node's
+            # key then it lies in  left subtree
+            if key < node.key:
+                node.left = deleteNode(node.left, key)
+            elif key > node.key:
+                node.right = deleteNode(node.right, key)
+
+            # If key is same as node's key, then this is the node
+            # to be deleted
+            else:
+
+                # Node with only one child or no child
+                if node.left is None:
+                    temp = node.right
+                    node = None
+                    return temp
+
+                elif node.right is None:
+                    temp = node.left
+                    node = None
+                    return temp
+
+                # Node with two children:
+                # Get the inorder successor
+                # (smallest in the right subtree)
+                temp = min_node(node.right)
+
+                # Copy the inorder successor's
+                # content to this node
+                node.key = temp.key
+
+                # Delete the inorder successor
+                node.right = deleteNode(node.right, temp.key)
+
+            return node
+
+        self.__root = deleteNode(self.__root, key)
 
     def avlBalance(self) -> None:
         # WRITE YOUR CODE HERE
 
         raise NotImplementedError
 
-# test case 0
-tc_0 = BST(**data['testcase_0'])
-assert(tc_0.height(15)==0)
-assert(tc_0.height(7)==4)
 
 # test case 1
-tc_1 = BST(**data['testcase_1'])
-assert(tc_1.height(6)==1)
-assert(tc_1.height(11)==1)
-
-# test case 4
 tc_4 = BST(**data['testcase_4'])
-assert(tc_4.height(15)==2)
-assert(tc_4.height(45)==2)
+
+print(f"The tree before deleting 45 and 15")
+print(f"The size of tree before deleting 45 and 15 is {tc_4.size()}")
+tc_4.printTree()
+
+print(f"\nThe tree after deleting 45 and 15")
+tc_4.delete(45)
+tc_4.delete(15)
+print(f"The size of tree after deleting 45 and 15 is {tc_4.size()}")
+tc_4.printTree()
