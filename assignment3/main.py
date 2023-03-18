@@ -64,9 +64,32 @@ class BST:
 
     # find the height of a node with given key
     def height(self, key: int) -> int:
-        # WRITE YOUR CODE HERE
+        def internal_height(node):
+            if node is None:
+                return 0
+            leftAns = internal_height(node.left)
+            rightAns = internal_height(node.right)
+            return max(leftAns, rightAns) +1
 
-        raise NotImplementedError
+        def internal_traverse(node):
+            if node is None:
+                return None
+            if node.key == key:
+                return node
+            else:
+                if key < node.key:
+                    temp_one = internal_traverse(node.left)
+                elif key > node.key:
+                    temp_one = internal_traverse(node.right)
+                else:
+                    temp_one = None
+                return temp_one
+
+        node_found = internal_traverse(self.__root)
+        left_height = internal_height(node_found.left)
+        right_height = internal_height(node_found.right)
+
+        return max(left_height, right_height)
 
     # get the value at a node with a given key
     def getValue(self, key: int) -> str:
@@ -225,23 +248,17 @@ class BST:
 
         raise NotImplementedError
 
-
-# # test case 0
+# test case 0
 tc_0 = BST(**data['testcase_0'])
-assert (tc_0.rank(6) == 3)
-assert (tc_0.rank(11) == 5)
+assert(tc_0.height(15)==0)
+assert(tc_0.height(7)==4)
 
-# # test case 1
+# test case 1
 tc_1 = BST(**data['testcase_1'])
-assert (tc_1.rank(9) == 6)
-assert (tc_1.rank(4) == 2)
+assert(tc_1.height(6)==1)
+assert(tc_1.height(11)==1)
 
-# # test case 2
-tc_2 = BST(**data['testcase_2'])
-assert (tc_2.rank(50) == 4)
-assert (tc_2.rank(22) == 1)
-
-# # test case 4
+# test case 4
 tc_4 = BST(**data['testcase_4'])
-assert (tc_4.rank(42) == 7)
-assert (tc_4.rank(21) == 3)
+assert(tc_4.height(15)==2)
+assert(tc_4.height(45)==2)
