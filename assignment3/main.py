@@ -148,7 +148,7 @@ class BST:
         while True:
             if side.left is not None and side.right is not None:
                 if side.key < key:
-                        side = side.right
+                    side = side.right
                 elif side.key > key:
                     if side.left.key < key < side.key:
                         return side.key
@@ -161,7 +161,7 @@ class BST:
                     else:
                         side = side.right
                 else:
-                    side=side.right
+                    side = side.right
             elif side.left is not None:
                 if side.key > key:
                     if side.left.key < key:
@@ -181,9 +181,39 @@ class BST:
                     return side.key
 
     def rank(self, key: int) -> int:
-        # WRITE YOUR CODE HERE
+        def find_size(node):
+            size = 1
+            if node.left is not None and node.key < key:
+                size += find_size(node.left)
+            if node.right is not None and node.key < key:
+                size += find_size(node.right)
 
-        raise NotImplementedError
+            if node.key > key or node.key == key:
+                size -= 1
+            if node.key > key and node.left is not None:
+                size += find_size(node.left)
+            return size
+
+        def find_internal_rank(node):
+            count = 0
+            if key == self.__root.key:
+                if node is None:
+                    return 0
+                else:
+                    return find_size(self.__root.left)
+            if key > self.__root.key:
+                count += 1
+                if self.__root.left is not None:
+                    count += find_size(self.__root.left)
+                if self.__root.right is not None:
+                    count += find_size(self.__root.right)
+                return count
+            if key < self.__root.key:
+                if self.__root.left is not None:
+                    count += find_size(self.__root.left)
+                return count
+
+        return find_internal_rank(self.__root)
 
     def delete(self, key: int) -> None:
         # WRITE YOUR CODE HERE
@@ -196,37 +226,22 @@ class BST:
         raise NotImplementedError
 
 
+# # test case 0
+tc_0 = BST(**data['testcase_0'])
+assert (tc_0.rank(6) == 3)
+assert (tc_0.rank(11) == 5)
+
 # # test case 1
 tc_1 = BST(**data['testcase_1'])
-# tc_1.printTree()
+assert (tc_1.rank(9) == 6)
+assert (tc_1.rank(4) == 2)
 
+# # test case 2
+tc_2 = BST(**data['testcase_2'])
+assert (tc_2.rank(50) == 4)
+assert (tc_2.rank(22) == 1)
+
+# # test case 4
 tc_4 = BST(**data['testcase_4'])
-tc_4.printTree()
-
-# assert (tc_1.floor(9) == 8)
-# assert (tc_1.floor(5) == 4)
-# assert (tc_1.floor(10) == 10)
-# assert (tc_1.floor(5) == 4)
-#
-# # # test case 4
-#
-# assert (tc_4.floor(55) == 50)
-# assert (tc_4.floor(1) is None)
-# assert (tc_4.floor(21) == 20)
-# assert (tc_4.floor(28) == 25)
-# assert (tc_4.floor(42) == 40)
-
-# test case 1
-# tc_1 = BST(**data['testcase_1'])
-assert (tc_1.ceiling(9) == 10)
-assert (tc_1.ceiling(4) == 4)
-assert (tc_1.ceiling(5) == 6)
-assert (tc_1.ceiling(2) == 3)
-
-
-# # # test case 4
-# tc_4 = BST(**data['testcase_4'])
-assert (tc_4.ceiling(31) == 35)
-assert (tc_4.ceiling(41) == 45)
-assert (tc_4.ceiling(25) == 25)
-assert (tc_4.ceiling(51) == None)
+assert (tc_4.rank(42) == 7)
+assert (tc_4.rank(21) == 3)
