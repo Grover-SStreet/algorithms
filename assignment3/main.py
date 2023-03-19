@@ -362,17 +362,3 @@ class BST:
             return node
 
         self.__root = is_balanced(self.__root)
-
-
-# test case 1
-tc_1 = BST(**data['testcase_1'])
-print("The original tree")
-tc_1.printTree()
-
-tc_1.insert(5, "Hello")
-print("\nThe tree after adding key 5")
-tc_1.printTree()
-
-print("\nThe tree after balancing")
-tc_1.avlBalance()
-tc_1.printTree()
