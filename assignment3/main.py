@@ -320,7 +320,7 @@ class BST:
             else:
                 height_two = 0
 
-            node.N = max(height_one , height_two)
+            node.N = max(height_one, height_two)
 
             if temp_node.left is not None:
                 height_one = self.height(temp_node.left.key)
@@ -341,21 +341,23 @@ class BST:
             return self.height(node.left.key) - self.height(node.right.key)
 
         def is_balanced(node):
-            balance = get_balance(node)
+            balance_num = get_balance(node)
+            need_left = -1
+            need_right = 1
 
-            if balance > 1 and node.key < node.left.key:
-                return right_rot(node)
-
-            if balance < -1 and node.key > node.right.key:
+            if balance_num < need_left and node.right.key > node.key:
+                node.right = right_rot(node.right)
                 return left_rot(node)
 
-            if balance > 1 and node.key > node.left.key:
+            if balance_num < need_left and node.right.key < node.key:
+                return left_rot(node)
+
+            if balance_num > need_right and node.left.key < node.key:
                 node.left = left_rot(node.left)
                 return right_rot(node)
 
-            if balance < -1 and node.key < node.right.key:
-                node.right = right_rot(node.right)
-                return left_rot(node)
+            if balance_num > need_right and node.left.key > node.key:
+                return right_rot(node)
 
             return node
 
@@ -367,7 +369,7 @@ tc_1 = BST(**data['testcase_1'])
 print("The original tree")
 tc_1.printTree()
 
-tc_1.insert(5,"Hello")
+tc_1.insert(5, "Hello")
 print("\nThe tree after adding key 5")
 tc_1.printTree()
 
