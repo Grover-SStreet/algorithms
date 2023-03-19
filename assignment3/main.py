@@ -239,7 +239,6 @@ class BST:
         return find_internal_rank(self.__root)
 
     def delete(self, key: int) -> None:
-        # WRITE YOUR CODE HERE
         def min_node(node):
             left_side = node
             while node.left is not None:
@@ -247,46 +246,24 @@ class BST:
             return left_side
 
         def deleteNode(node, key):
-
-            # Base Case
             if node is None:
                 return node
-
-            # If the key to be deleted
-            # is smaller than the node's
-            # key then it lies in  left subtree
-            if key < node.key:
+            if node.key > key:
                 node.left = deleteNode(node.left, key)
-            elif key > node.key:
+            elif node.key < key:
                 node.right = deleteNode(node.right, key)
-
-            # If key is same as node's key, then this is the node
-            # to be deleted
             else:
-
-                # Node with only one child or no child
                 if node.left is None:
                     temp = node.right
-                    node = None
                     return temp
 
                 elif node.right is None:
                     temp = node.left
-                    node = None
                     return temp
 
-                # Node with two children:
-                # Get the inorder successor
-                # (smallest in the right subtree)
-                temp = min_node(node.right)
-
-                # Copy the inorder successor's
-                # content to this node
-                node.key = temp.key
-
-                # Delete the inorder successor
-                node.right = deleteNode(node.right, temp.key)
-
+                temp_node = min_node(node.right)
+                node.key = temp_node.key
+                node.right = deleteNode(node.right, temp_node.key)
             return node
 
         self.__root = deleteNode(self.__root, key)
@@ -295,17 +272,3 @@ class BST:
         # WRITE YOUR CODE HERE
 
         raise NotImplementedError
-
-
-# test case 1
-tc_4 = BST(**data['testcase_4'])
-
-print(f"The tree before deleting 45 and 15")
-print(f"The size of tree before deleting 45 and 15 is {tc_4.size()}")
-tc_4.printTree()
-
-print(f"\nThe tree after deleting 45 and 15")
-tc_4.delete(45)
-tc_4.delete(15)
-print(f"The size of tree after deleting 45 and 15 is {tc_4.size()}")
-tc_4.printTree()
