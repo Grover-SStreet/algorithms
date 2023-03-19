@@ -245,13 +245,13 @@ class BST:
                 left_side = node.left
             return left_side
 
-        def deleteNode(node, key):
+        def delete_node(node, temp_key):
             if node is None:
                 return node
-            if node.key > key:
-                node.left = deleteNode(node.left, key)
-            elif node.key < key:
-                node.right = deleteNode(node.right, key)
+            if node.key > temp_key:
+                node.left = delete_node(node.left, temp_key)
+            elif node.key < temp_key:
+                node.right = delete_node(node.right, temp_key)
             else:
                 if node.left is None:
                     temp = node.right
@@ -263,12 +263,26 @@ class BST:
 
                 temp_node = min_node(node.right)
                 node.key = temp_node.key
-                node.right = deleteNode(node.right, temp_node.key)
+                node.right = delete_node(node.right, temp_node.key)
             return node
 
-        self.__root = deleteNode(self.__root, key)
+        self.__root = delete_node(self.__root, key)
 
     def avlBalance(self) -> None:
         # WRITE YOUR CODE HERE
 
         raise NotImplementedError
+
+
+# test case 1
+tc_4 = BST(**data['testcase_4'])
+
+print(f"The tree before deleting 45 and 15")
+print(f"The size of tree before deleting 45 and 15 is {tc_4.size()}")
+tc_4.printTree()
+
+print(f"\nThe tree after deleting 45 and 15")
+tc_4.delete(45)
+tc_4.delete(15)
+print(f"The size of tree after deleting 45 and 15 is {tc_4.size()}")
+tc_4.printTree()
