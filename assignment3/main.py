@@ -86,10 +86,12 @@ class BST:
                 return temp_one
 
         node_found = internal_traverse(self.__root)
-        left_height = internal_height(node_found.left)
-        right_height = internal_height(node_found.right)
-
-        return max(left_height, right_height)
+        if node_found is not None:
+            left_height = internal_height(node_found.left)
+            right_height = internal_height(node_found.right)
+            return max(left_height, right_height)
+        else:
+            return -1
 
     # get the value at a node with a given key
     def getValue(self, key: int) -> str:
@@ -269,20 +271,106 @@ class BST:
         self.__root = delete_node(self.__root, key)
 
     def avlBalance(self) -> None:
-        # WRITE YOUR CODE HERE
+        def left_rot(node):
 
-        raise NotImplementedError
+            temp_node = node.right
+            temp_left = temp_node.left
+
+            temp_node.left = node
+            node.right = temp_left
+
+            if node.left is not None:
+                height_one = self.height(node.left.key)
+            else:
+                height_one = 0
+            if node.right is not None:
+                height_two = self.height(node.right.key)
+            else:
+                height_two = 0
+
+            node.N = max(height_one, height_two)
+
+            if temp_node.left is not None:
+                height_one = self.height(temp_node.left.key)
+            else:
+                height_one = 0
+            if temp_node.right is not None:
+                height_two = self.height(temp_node.right.key)
+            else:
+                height_two = 0
+
+            temp_node.N = max(height_one, height_two)
+
+            return temp_node
+
+        def right_rot(node):
+
+            temp_node = node.left
+            right_temp_node = temp_node.right
+
+            temp_node.right = node
+            node.left = right_temp_node
+
+            if node.left is not None:
+                height_one = self.height(node.left.key)
+            else:
+                height_one = 0
+            if node.right is not None:
+                height_two = self.height(node.right.key)
+            else:
+                height_two = 0
+
+            node.N = max(height_one , height_two)
+
+            if temp_node.left is not None:
+                height_one = self.height(temp_node.left.key)
+            else:
+                height_one = 0
+            if temp_node.right is not None:
+                height_two = self.height(temp_node.right.key)
+            else:
+                height_two = 0
+
+            temp_node.N = max(height_one, height_two)
+
+            return temp_node
+
+        def get_balance(node):
+            if self.__root.key != node.key:
+                return 0
+            return self.height(node.left.key) - self.height(node.right.key)
+
+        def is_balanced(node):
+            balance = get_balance(node)
+
+            if balance > 1 and node.key < node.left.key:
+                return right_rot(node)
+
+            if balance < -1 and node.key > node.right.key:
+                return left_rot(node)
+
+            if balance > 1 and node.key > node.left.key:
+                node.left = left_rot(node.left)
+                return right_rot(node)
+
+            if balance < -1 and node.key < node.right.key:
+                node.right = right_rot(node.right)
+                return left_rot(node)
+
+            return node
+
+        self.__root = is_balanced(self.__root)
 
 
 # test case 1
-tc_4 = BST(**data['testcase_4'])
+tc_1 = BST(**data['testcase_1'])
+print("The original tree")
+tc_1.printTree()
 
-print(f"The tree before deleting 45 and 15")
-print(f"The size of tree before deleting 45 and 15 is {tc_4.size()}")
-tc_4.printTree()
+tc_1.insert(5,"Hello")
+print("\nThe tree after adding key 5")
+tc_1.printTree()
 
-print(f"\nThe tree after deleting 45 and 15")
-tc_4.delete(45)
-tc_4.delete(15)
-print(f"The size of tree after deleting 45 and 15 is {tc_4.size()}")
-tc_4.printTree()
+print("\nThe tree after balancing")
+tc_1.avlBalance()
+tc_1.printTree()
