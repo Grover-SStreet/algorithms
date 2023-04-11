@@ -1,37 +1,34 @@
-def merge_sort(array):
-    single_element = 1
-    if len(array) > single_element:
-        array_middle = len(array) // 2
-        left_split = array[:array_middle]
-        right_split = array[array_middle:]
+def heapify(arr, n, i):
+    largest = i
+    left = 2 * i + 1
+    right = 2 * i + 2
 
-        merge_sort(left_split)
-        merge_sort(right_split)
+    if left < n and arr[left] > arr[largest]:
+        largest = left
 
-        index_one = 0
-        index_two = 0
-        index_three = 0
+    if right < n and arr[right] > arr[largest]:
+        largest = right
 
-        while index_one < len(left_split) and index_two < len(right_split):
-            if left_split[index_one] < right_split[index_two]:
-                array[index_three] = left_split[index_one]
-                index_one += 1
-            else:
-                array[index_three] = right_split[index_two]
-                index_two += 1
-            index_three += 1
-
-        while index_one < len(left_split):
-            array[index_three] = left_split[index_one]
-            index_one += 1
-            index_three += 1
-
-        while index_two < len(right_split):
-            array[index_three] = right_split[index_two]
-            index_two += 1
-            index_three += 1
+    if largest != i:
+        arr[i], arr[largest] = arr[largest], arr[i]
+        heapify(arr, n, largest)
 
 
-arr = [3, 6, 1, 9, 5, 2, 4, 7, 8]
-merge_sort(arr)
-assert arr == [1, 2, 3, 4, 5, 6, 7, 8, 9]
+def heap_sort(temp_array):
+    length_of_array = len(temp_array)
+
+    for i in range(length_of_array // 2, -1, -1):
+        heapify(temp_array, length_of_array, i)
+
+    for index in range(length_of_array - 1, 0, -1):
+        # Swap
+        temp_array[index], temp_array[0] = temp_array[0], temp_array[index]
+        heapify(temp_array, index, 0)
+
+
+arr = [1, 12, 9, 5, 6, 10]
+heap_sort(arr)
+n = len(arr)
+print("Sorted array is")
+for i in range(n):
+    print("%d " % arr[i], end='')
