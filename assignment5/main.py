@@ -1,28 +1,22 @@
 import heapq
-import math
 
-test_case4 = {
-    "A": [("B", 2), ("C", 3), ("D", 1)],
-    "B": [("A", 2), ("D", 3), ("E", 5)],
-    "C": [("A", 3), ("D", 4), ("F", 2)],
-    "D": [("A", 1), ("B", 3), ("C", 4), ("E", 1), ("F", 6), ("G", 8)],
-    "E": [("B", 5), ("D", 1), ("G", 6)],
-    "F": [("C", 2), ("D", 6), ("G", 3)],
-    "G": [("D", 8), ("E", 6), ("F", 3)],
+test_case1 = {
+    "A": [("B", 7), ("D", 5)],
+    "B": [("A", 7), ("C", 8), ("D", 9), ("E", 7)],
+    "C": [("B", 8), ("E", 5)],
+    "D": [("A", 5), ("B", 9), ("E", 15), ("F", 6)],
+    "E": [("B", 7), ("C", 5), ("D", 15), ("F", 8), ("G", 9)],
+    "F": [("D", 6), ("E", 8), ("G", 11)],
+    "G": [("E", 9), ("F", 11)],
 }
 
 starting_point = 'A'
-end_point = 'G'
 
 
 # *Hint: Modify the Dijkstra's algorithm implementation to return the shortest path between two nodes in addition to the
 # shortest distances. To do this, you will need to maintain a dictionary to store the previous node in the shortest path
 # for each node. After finding the shortest distances, you can reconstruct the path by backtracking from the destination
 # node to the source node using the previous nodes.*
-
-
-import heapq
-
 
 def prim(graph, start):
     """
@@ -36,9 +30,42 @@ def prim(graph, start):
     """
 
     # your code here
-    visited = []
-    visited.append(start)
+    total_distance = 0
 
-    node_mapping = {}
+    visited = {start}
+    temp_adds = []
+    priority_queue = []
+    for neighbor, weight in graph[start]:
+        priority_queue.append((weight, (start, neighbor)))
 
-    priority_queue = [(0, start)]
+    heapq.heapify(priority_queue)
+
+    while len(priority_queue) > 0:
+        # Step 3-1: Remove the vertex in the fringe with the minimum priority. O(log |V|)
+        current_distance, current_vertex = heapq.heappop(priority_queue)
+        visiting_vertex = current_vertex[1]
+        if visiting_vertex not in visited:
+            for neighbor, weight in graph[visiting_vertex]:
+                if neighbor not in visited:
+                    heapq.heappush(priority_queue, (weight, (visiting_vertex, neighbor)))
+
+            visited.add(visiting_vertex)
+            temp_adds.append(current_vertex)
+        heapq.heapify(priority_queue)
+
+    for element in temp_adds:
+        for index in graph[element[0]]:
+            if index[0] == element[1]:
+                total_distance += index[1]
+
+    return total_distance
+
+print(prim(test_case1, 'A'))
+
+# Minimum spanning tree total weight: 39
+5
+6
+7
+7
+5
+9
